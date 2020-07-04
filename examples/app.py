@@ -1,4 +1,4 @@
-from framework.api import API
+from framework import API
 
 app = API()
 
