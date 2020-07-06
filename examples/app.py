@@ -1,20 +1,20 @@
 from framework import API
 
-app = API()
+app = API(templates_dir="examples/templates", static_dir="examples/static")
 
 
 @app.route("/home")
-def home(request, response):
-    response.body = app.render_template(
-        "index.html", context={"example": "Some sample sentence", "id": 23}).encode()
+def home(request):
+    return app.render_template(
+        "index.html", context={"example": "Some sample sentence", "id": 23})
 
 
 @app.route("/work/{new}")
-def work(request, response, new):
-    response.text = f"Hello {new} work"
+def work(request, new):
+    return f"Hello {new} work"
 
 
 @app.route("/test")
 class Test():
     def get(self, req, resp):
-        resp.text = "New route"
+        return "New route"

@@ -12,7 +12,9 @@ from .middleware import Middleware
 class API:
     """Base API class for web framework"""
 
-    def __init__(self, templates_dir="templates", static_dir=""):
+    """Initizialize with: app = API()"""
+
+    def __init__(self, templates_dir="templates", static_dir="static"):
         self.routes = {}
         self.exception_handler = None
         self.whitenoise = WhiteNoise(self.wsgi, root=static_dir)
@@ -25,6 +27,7 @@ class API:
         path_info = environ["PATH_INFO"]
 
         if path_info.startswith("/static"):
+            environ["PATH_INFO"] = path_info[len("/static"):]
             return self.whitenoise(environ, start_response)
 
         return self.middleware(environ, start_response)
@@ -43,6 +46,11 @@ class API:
     def route(self, path):
         """Routes decorators to associate url path and function"""
 
+        """
+        Example:
+
+        @app.route
+        """
         assert path not in self.routes, f"Route '{path}' already exists"
 
         def wrapper(handler):
@@ -93,9 +101,7 @@ class API:
                     if handler is None:
                         raise AttributeError(
                             "Method is not implemented", request.method)
-                    handler(request, response, **kwargs)
-                else:
-                    handler(request, response, **kwargs)
+                response.body = handler(request, **kwargs).encode()
             else:
                 self.default_response(response)
         except Exception as e:
@@ -111,6 +117,6 @@ class API:
         """Not found response if page does not exists"""
 
         response.status_code = 404
-        response.text = "Not found."
+        response.text = "<h1>Not found 404</h1>"
 
         return response
