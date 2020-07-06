@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     name="web-framework-ullyzian",
-    version="0.0.1",
+    version="0.0.2",
     author="Viktor Ashcheulov",
     author_email="victor.ashcheulov@gmail.com",
     description="Personal framework for educational purposes",

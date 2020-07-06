@@ -1,0 +1,6 @@
+gunicorn==20.0.4
+Jinja2==2.11.2
+MarkupSafe==1.1.1
+parse==1.15.0
+WebOb==1.8.6
+whitenoise==5.1.0
